@@ -1,66 +1,87 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Proyecto Laravel: Jornadas de Videojuegos
+## Descripción
+Este proyecto es una aplicación web desarrollada en Laravel para gestionar las Jornadas de Videojuegos organizadas por el IES Francisco Ayala. El sistema permite gestionar la inscripción a conferencias y talleres, realizar pagos, y gestionar a los ponentes y eventos de la jornada.
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Funcionalidades principales:
+- Gestión de eventos: La aplicación permite gestionar dos tipos de eventos: conferencias y talleres. Los eventos están distribuidos durante dos días (jueves y viernes), con limitaciones de espacio para conferencias y talleres.
 
-## About Laravel
+- Inscripción de usuarios: Los usuarios pueden registrarse, elegir entre tres tipos de asistencia (presencial, virtual, gratuita para estudiantes), y seleccionar las conferencias y talleres a los que desean asistir. La inscripción se completa mediante un proceso de pago a través de PayPal.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- Validación de usuarios: Durante el proceso de registro, se realiza la validación del correo electrónico y la confirmación de la inscripción.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- Gestión de eventos y ponentes para administradores: Los administradores pueden gestionar la lista de eventos, ponentes, y controlar los ingresos recibidos.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Instalación
+1. Clonar el repositorio
+Para comenzar a trabajar con este proyecto, clónalo en tu máquina local:
+    `git clone https://github.com/ortizzxz/ProyectoLaravel.git`
 
-## Learning Laravel
+2. Instalar las dependencias de Composer
+Una vez clonado el proyecto, navega a la carpeta del proyecto y ejecuta el siguiente comando para instalar las dependencias de Laravel:
+    `composer install`
+    
+3. Configuración de variables de entorno (Customizable)
+A continuación, configura las variables de entorno en el archivo .env según tus necesidades, como la conexión a la base de datos y las credenciales de PayPal.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+4. Generar la clave de la aplicación
+    `php artisan key:generate`
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+5. Migrar la base de datos
+Ejecuta las migraciones para crear las tablas necesarias en tu base de datos:
+    `php artisan migrate`
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+6. Servir la aplicación
+Finalmente, puedes iniciar el servidor local de Laravel con:
+    `php artisan serve`
 
-## Laravel Sponsors
+Esto debería hacer que la aplicación esté disponible en http://localhost:8000.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## Funcionalidades implementadas
+1. Gestión de usuarios
+Registro de usuario: Los usuarios pueden registrarse mediante un formulario, eligiendo el tipo de asistencia (presencial, virtual, gratuita).
+Login y Logout: Los usuarios pueden iniciar sesión y cerrar sesión en la plataforma.
+Confirmación por correo electrónico: Es obligatorio confirmar la cuenta a través del correo antes de completar el registro.
+2. Inscripción a eventos
+Los usuarios pueden seleccionar conferencias y talleres a los que desean asistir. Cada tipo de evento tiene un cupo limitado.
+Se muestra la disponibilidad en tiempo real durante el proceso de inscripción.
+Los usuarios pueden asistir a un máximo de 5 conferencias y 4 talleres.
+3. Gestión de pagos
+Los usuarios pueden realizar pagos a través de PayPal para completar su inscripción.
+Una vez realizado el pago, se genera un comprobante y se envía por correo electrónico.
+4. Gestión de eventos y ponentes (para administradores)
+Los administradores pueden ver y gestionar los eventos y ponentes de las jornadas.
+Es posible añadir nuevos eventos, asignarles un ponente y gestionar los detalles.
+Los ponentes tienen una foto, nombre y redes sociales asociadas.
+5. Visibilidad de ingresos
+Los administradores pueden consultar los ingresos recibidos a través de los pagos de los asistentes.
 
-### Premium Partners
+## Rutas
+### Rutas públicas:
+- /register: Formulario de registro de usuario.
+- /login: Formulario de inicio de sesión.
+- /eventos: Ver lista de eventos y talleres disponibles.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+### Rutas protegidas (requieren autenticación):
+- /dashboard: Página principal del usuario autenticado.
+- /profile: Página de edición del perfil del usuario.
 
-## Contributing
+### Rutas de administración (requieren autenticación y rol de administrador):
+- /admin: Panel de administración.
+- /admin/ponentes: Gestión de ponentes.
+- /admin/eventos: Gestión de eventos.
+- /admin/ingresos: Ver ingresos recibidos.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Estructura del proyecto
 
-## Code of Conduct
+El proyecto sigue el patrón MVC (Modelo-Vista-Controlador), y se utiliza repositorios para la interacción con la base de datos.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Directorios principales:
+- app/Http/Controllers: Controladores de la aplicación (gestión de usuarios, eventos, pagos, etc.).
+- app/Models: Modelos de la base de datos (Usuario, Evento, Inscripción, etc.).
+- resources/views: Archivos Blade para las vistas de la aplicación.
+- database/migrations: Archivos de migración para la base de datos.
 
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Consideraciones
+- Validación de formularios: Todos los formularios de registro, login y pago están validados.
+- Comentarios: El código está comentado para facilitar su comprensión.
+- Git y GitHub: Este proyecto está versionado mediante Git y alojado en GitHub. Puedes clonar el repositorio y hacer tus propios cambios si es necesario.
