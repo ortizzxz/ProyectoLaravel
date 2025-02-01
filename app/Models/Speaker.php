@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Speaker extends Model
 {
     use HasFactory;
+    protected $table = 'ponentes'; // Indicar que este modelo usa la tabla "ponentes"
+
 
     protected $fillable = ['nombre', 'descripcion', 'foto', 'areas_experiencia', 'redes_sociales'];
 

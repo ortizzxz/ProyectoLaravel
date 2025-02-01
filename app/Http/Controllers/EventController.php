@@ -1,17 +1,48 @@
 <?php
+// app/Http/Controllers/EventoController.php
+namespace App\Http\Controllers;
 
-    namespace App\Http\Controllers;
+use App\Models\Event;
+use App\Models\Speaker;
+use Illuminate\Http\Request;
 
-    use Illuminate\Http\Request;
-    use App\Models\Event;
-    use App\Models\Speaker;
-
-    class EventController extends Controller
+class EventController extends Controller
+{
+    public function index()
     {
-        // Mostrar todos los eventos disponibles
-        public function index()
-        {
-            $eventos = Event::all(); // O con filtros según el tipo (conferencia/taller)
-            return view('eventos.index', compact('eventos'));
-        }
+        // Obtener todos los eventos
+        $eventos = Event::with('ponente')->get();
+        return view('eventos.index', compact('eventos'));
     }
+
+    public function create()
+    {
+        // Obtener todos los ponentes disponibles
+        $ponentes = Speaker::all();
+        return view('eventos.create', compact('ponentes'));
+    }
+
+    public function store(Request $request)
+    {
+        // Validar la información del evento
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'fecha' => 'required|date',
+            'hora_inicio' => 'required|date_format:H:i',
+            'hora_fin' => 'required|date_format:H:i|after:hora_inicio',
+            'ponente_id' => 'required|exists:ponentes,id',
+        ]);
+
+        // Crear un nuevo evento
+        Event::create($request->all());
+
+        return redirect()->route('eventos.index')->with('success', 'Evento registrado con éxito.');
+    }
+
+    public function destroy($id)
+    {
+        // Eliminar el evento por ID
+        Event::findOrFail($id)->delete();
+        return redirect()->route('eventos.index')->with('success', 'Evento eliminado con éxito.');
+    }
+}

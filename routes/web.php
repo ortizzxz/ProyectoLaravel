@@ -30,7 +30,7 @@ Route::middleware('auth')->group(function () {
 
     // Redirect GET requests to POST method for "/inscribirse" // IMPORTANTE
     Route::get('/inscribirse', function() {
-        return redirect()->route('/'); 
+        return view('welcome');
     });
 
     // Rutas para el proceso de pago con PayPal
@@ -60,9 +60,10 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     
     // Gestión de eventos
     Route::get('/eventos', [AdminController::class, 'listEventos'])->name('admin.eventos');
-    Route::post('/eventos', [AdminController::class, 'storeEvento']);
-    Route::delete('/eventos/{id}', [AdminController::class, 'destroyEvento']);
-    
+    Route::get('/eventos/create', [AdminController::class, 'createEvento'])->name('admin.eventos.create');  // Ruta para mostrar formulario
+    Route::post('/eventos', [AdminController::class, 'storeEvento'])->name('admin.eventos.store');  // Ruta para almacenar el evento
+    Route::delete('/eventos/{id}', [AdminController::class, 'destroyEvento'])->name('admin.eventos.destroy');
+
     // Ver ingresos recibidos
     Route::get('/ingresos', [AdminController::class, 'showIngresos'])->name('admin.ingresos');
 });

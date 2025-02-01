@@ -6,15 +6,34 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
+                        <img src="{{ asset('images/logoAN.png') }}" alt="Logo" class="h-16 ">
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
+                    <!-- Regular Dashboard -->
+                    @if(Auth::check() && !Auth::user()->es_admin)
+                        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                            {{ __('Dashboard') }}
+                        </x-nav-link>
+                    @endif
+
+                    <!-- Admin Dashboard and Sections (only for admins) -->
+                    @if(Auth::check() && Auth::user()->es_admin)
+                        <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
+                            {{ __('Admin Dashboard') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('admin.ponentes')" :active="request()->routeIs('admin.ponentes')">
+                            {{ __('Ponentes') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('admin.eventos')" :active="request()->routeIs('admin.eventos')">
+                            {{ __('Eventos') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('admin.ingresos')" :active="request()->routeIs('admin.ingresos')">
+                            {{ __('Tesorería') }}
+                        </x-nav-link>
+                    @endif
                 </div>
             </div>
 
@@ -70,6 +89,13 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+
+            <!-- Responsive Admin Dashboard Link -->
+            @if(Auth::check() && Auth::user()->es_admin)
+                <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
+                    {{ __('Admin Dashboard') }}
+                </x-responsive-nav-link>
+            @endif
         </div>
 
         <!-- Responsive Settings Options -->

@@ -26,7 +26,11 @@ return new class extends Migration {
      * Reverse the migrations.
      */
     public function down(): void
-    {
+    {Schema::table('inscripciones', function (Blueprint $table) {
+        $table->dropForeign(['user_id']); // Elimina la clave foránea
+    });
+
+    Schema::dropIfExists('inscripciones');
         //
     }
 };
