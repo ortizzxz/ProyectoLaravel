@@ -58,6 +58,11 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::post('/ponentes', [AdminController::class, 'storePonente']);
     Route::delete('/ponentes/{id}', [AdminController::class, 'destroyPonente']);
     
+    // Gestión de usuarios
+    Route::get('/usuarios', [AdminController::class, 'listUsuarios'])->name('admin.usuarios');
+    Route::post('/usuarios', [AdminController::class, 'storeUsuario']);
+    Route::delete('/usuarios/{id}', [AdminController::class, 'destroyUsuario']);
+    
     // Gestión de eventos
     Route::get('/eventos', [AdminController::class, 'listEventos'])->name('admin.eventos');
     Route::get('/eventos/create', [AdminController::class, 'createEvento'])->name('admin.eventos.create');  // Ruta para mostrar formulario

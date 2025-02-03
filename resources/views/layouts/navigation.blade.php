@@ -27,6 +27,9 @@
                         <x-nav-link :href="route('admin.ponentes')" :active="request()->routeIs('admin.ponentes')">
                             {{ __('Ponentes') }}
                         </x-nav-link>
+                        <x-nav-link :href="route('admin.usuarios')" :active="request()->routeIs('admin.usuarios')">
+                            {{ __('Usuarios') }}
+                        </x-nav-link>
                         <x-nav-link :href="route('admin.eventos')" :active="request()->routeIs('admin.eventos')">
                             {{ __('Eventos') }}
                         </x-nav-link>

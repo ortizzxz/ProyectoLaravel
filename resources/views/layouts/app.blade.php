@@ -29,7 +29,8 @@
 
             <!-- Page Content -->
             <main>
-                @yield('content')
+                {{ $slot ?? '' }} <!--  Blade components -->
+                @yield('content') <!--  Blade views -->
             </main>
         </div>
     </body>
