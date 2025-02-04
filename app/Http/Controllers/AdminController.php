@@ -130,7 +130,7 @@ class AdminController extends Controller
         $validatedData = $request->validate($rules, $messages);
 
         // Sanitización
-        $titulo = e(Str::of($request->titulo)->trim()); // e() escapa cualquier carácter especial HTML (< > & etc.), previniendo ataques XSS.
+        $titulo = e(Str::of($request->titulo)->trim());
         $tipo = $request->tipo;
         $fecha = Carbon::parse($request->fecha)->format('Y-m-d');
         $hora_inicio = $request->hora_inicio;
@@ -142,7 +142,7 @@ class AdminController extends Controller
         // Calcular la hora de fin (sumando 55 minutos)
         $hora_fin = $calcularHora->copy()->addMinutes(55)->format('H:i');
 
-        // Validar que el ponente no tenga otro evento en el mismo horario
+        // Validar que el ponente no tenga otro evento en este horario
         $eventoSuperpuestoPonente = Event::where('fecha', $fecha)
             ->where('ponente_id', $ponente_id)
             ->where(function ($query) use ($hora_inicio, $hora_fin) {
@@ -159,12 +159,29 @@ class AdminController extends Controller
             return redirect()->route('admin.eventos')->with('error', 'El ponente ya tiene otro evento en este horario.');
         }
 
-        // Validar superposición con descansos
+        //  Validar que no haya otra conferencia o taller a la misma hora
+        $eventoSuperpuestoTipo = Event::where('fecha', $fecha)
+            ->where('tipo', $tipo) // Se asegura de que sea otro evento del mismo tipo
+            ->where(function ($query) use ($hora_inicio, $hora_fin) {
+                $query->whereBetween('hora_inicio', [$hora_inicio, $hora_fin])
+                    ->orWhereBetween('hora_fin', [$hora_inicio, $hora_fin])
+                    ->orWhere(function ($query) use ($hora_inicio, $hora_fin) {
+                        $query->where('hora_inicio', '<', $hora_inicio)
+                            ->where('hora_fin', '>', $hora_fin);
+                    });
+            })
+            ->exists();
+
+        if ($eventoSuperpuestoTipo) {
+            return redirect()->route('admin.eventos')->with('error', 'Ya existe otra ' . $tipo . ' en este horario.');
+        }
+
+        //  Validar superposición con descansos (si es necesario)
         if ($mensaje = Event::validarSuperposicionConDescanso($fecha, $hora_inicio, $hora_fin, $tipo)) {
             return redirect()->route('admin.eventos')->with('error', $mensaje);
         }
 
-        // Crear evento
+        //  Crear evento
         Event::create([
             'titulo' => $titulo,
             'tipo' => $tipo,
@@ -176,6 +193,7 @@ class AdminController extends Controller
 
         return redirect()->route('admin.eventos')->with('success', 'Evento creado exitosamente.');
     }
+
 
 
     // Eliminar un evento

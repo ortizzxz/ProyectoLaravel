@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.custom-select {
+    width: auto;
+    min-width: 200px;
+    padding-right: 30px;
+}
+
+.custom-select option {
+    padding: 5px;
+}

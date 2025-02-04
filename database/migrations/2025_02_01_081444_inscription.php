@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Relación con usuarios
             $table->foreignId('evento_id')->constrained()->onDelete('cascade'); // Relación con eventos
+            $table->enum('tipo_inscripcion', ['presencial', 'virtual', 'gratuita']);
             $table->timestamps();
 
             // Restricciones únicas: un usuario no puede inscribirse en el mismo evento más de una vez

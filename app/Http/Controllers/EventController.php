@@ -10,10 +10,11 @@ class EventController extends Controller
 {
     public function index()
     {
-        // Obtener todos los eventos
         $eventos = Event::with('ponente')->get();
+        dd($eventos); // This will dump and die, showing you the contents of $eventos
         return view('eventos.index', compact('eventos'));
     }
+    
 
     public function create()
     {

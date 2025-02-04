@@ -9,6 +9,7 @@ class Inscription extends Model
     use HasFactory;
 
     protected $fillable = ['user_id', 'evento_id'];
+    protected $table = 'inscripciones';
 
     public function user()
     {
@@ -17,6 +18,8 @@ class Inscription extends Model
 
     public function evento()
     {
-        return $this->belongsTo(Event::class);
+        return $this->belongsTo(Event::class, 'evento_id');
     }
+    
+    
 }

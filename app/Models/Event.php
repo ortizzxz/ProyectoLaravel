@@ -10,10 +10,18 @@ class Event extends Model
     use HasFactory;
     protected $table = 'eventos'; // Indicar que este modelo usa la tabla "ponentes"
 
-    protected $fillable = ['titulo', 'tipo', 'fecha', 'hora_inicio', 'hora_fin', 'ponente_id'];
-
+    protected $fillable = [
+        'titulo',
+        'tipo',
+        'fecha',
+        'hora_inicio',
+        'hora_fin',
+        'ponente_id',
+        'cupo_maximo'
+    ];
+    
     protected $casts = [
-        'fecha' => 'date',
+        'fecha' => 'date',  
         'hora_inicio' => 'datetime:H:i',
         'hora_fin' => 'datetime:H:i',
     ];
@@ -25,8 +33,10 @@ class Event extends Model
 
     public function inscripciones()
     {
-        return $this->hasMany(Inscription::class);
+        return $this->hasMany(Inscription::class, 'evento_id');
     }
+    
+
 
     // Validar la superposición de horarios
     public static function validarSuperposicionConDescanso($fecha, $hora_inicio, $hora_fin, $tipo)

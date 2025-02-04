@@ -1222,11 +1222,13 @@
                             Dashboard
                         </a>
                     @else
-                        <a href="{{ route('login') }}" class="rounded-md px-3 py-2 text-black ">
+                        <a href="{{ route('login') }}" class="rounded-md px-4 py-2 text-black transition duration-300 ease-in-out 
+                                    hover:bg-gray-500 hover:text-white hover:shadow-md">
                             Iniciar Sesión </a>
 
                         @if (Route::has('register'))
-                            <a href="{{ route('register') }}" class="rounded-md px-3 py-2 text-black ">
+                            <a href="{{ route('register') }}" class="rounded-md px-4 py-2 text-black transition duration-300 ease-in-out 
+                                    hover:bg-gray-500 hover:text-white hover:shadow-md">
                                 Registrarse
                             </a>
                         @endif
