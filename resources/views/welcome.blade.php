@@ -1209,26 +1209,40 @@
         </style>
     @endif
 </head>
-<header class="grid grid-cols-2 items-center gap-2 py-10 lg:grid-cols-3">
-    @if (Route::has('login'))
-        <nav class="-mx-3 flex flex-1 justify-end">
-            @auth
-                <a href="{{ url('/dashboard') }}" class="rounded-md px-3 py-2 text-black ">
-                    Dashboard
-                </a>
-            @else
-                <a href="{{ route('login') }}" class="rounded-md px-3 py-2 text-black ">
-                    Iniciar Sesión </a>
 
-                @if (Route::has('register'))
-                    <a href="{{ route('register') }}" class="rounded-md px-3 py-2 text-black ">
-                        Registrarse
-                    </a>
-                @endif
-            @endauth
-        </nav>
-    @endif
-</header>
+<body class="min-h-screen">
+    <div class="bg-cover bg-center bg-no-repeat min-h-screen flex flex-col"
+        style="background-image: url('./images/IES.webp');">
+
+        <header class="py-5 bg-gray-200 bg-opacity-75 flex justify-center w-full">
+            @if (Route::has('login'))
+                <nav class="flex space-x-4">
+                    @auth
+                        <a href="{{ url('/dashboard') }}" class="rounded-md px-3 py-2 text-black ">
+                            Dashboard
+                        </a>
+                    @else
+                        <a href="{{ route('login') }}" class="rounded-md px-3 py-2 text-black ">
+                            Iniciar Sesión </a>
+
+                        @if (Route::has('register'))
+                            <a href="{{ route('register') }}" class="rounded-md px-3 py-2 text-black ">
+                                Registrarse
+                            </a>
+                        @endif
+                    @endauth
+                </nav>
+            @endif
+        </header>
+
+        <!-- More content here -->
+        <div class="bg-white bg-opacity-75 p-8 rounded-lg shadow-lg mt-10">
+            <h1 class="text-3xl font-bold">Jornada XII IES Francisco Ayala</h1>
+            <p>Únete a nuestra jornada referente a videojuegos.</p>
+        </div>
+
+    </div>
 </body>
+
 
 </html>
