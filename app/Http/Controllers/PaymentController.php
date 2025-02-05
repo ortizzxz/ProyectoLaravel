@@ -36,7 +36,7 @@ class PaymentController extends Controller
             "purchase_units" => [
                 [
                     "amount" => [
-                        "currency_code" => "USD",
+                        "currency_code" => "EUR",
                         "value" => number_format((float) $request->total, 2, '.', '')
                     ]
                 ]
