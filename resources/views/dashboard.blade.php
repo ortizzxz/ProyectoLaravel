@@ -26,6 +26,7 @@
                 <div class="p-6 sm:px-20 bg-white border-b border-gray-200">
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         @foreach ($eventos as $evento)
+
                             <div class="bg-white rounded-lg shadow-md overflow-hidden">
                                 <div class="px-4 py-5 sm:p-6">
                                     <h3 class="text-lg leading-6 font-medium text-gray-900">
@@ -45,6 +46,7 @@
                                         <form action="{{ route('pay.with.paypal') }}" method="POST" class="mt-5">
                                             @csrf
                                             <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+                                            <input type="hidden" name="evento_id" value="{{ $evento->id }}">
                                             <div class="mb-3">
                                                 <label for="tipo_inscripcion"
                                                     class="block text-sm font-medium text-gray-700">Tipo de inscripción:</label>

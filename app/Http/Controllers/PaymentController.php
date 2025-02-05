@@ -24,7 +24,6 @@ class PaymentController extends Controller
         $existingInscription = Inscription::where('user_id', $request->user_id)
             ->where('evento_id', $request->evento_id)
             ->first();
-            
         if ($existingInscription) {
             return redirect()->route('dashboard')->with('error', 'Ya estás inscrito en este evento.');
         }
