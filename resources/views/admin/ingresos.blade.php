@@ -31,6 +31,7 @@
                 </tbody>
             </table>
         </div>
-
+        
     </div>
+    {{ $ingresos->links() }}
 @endsection

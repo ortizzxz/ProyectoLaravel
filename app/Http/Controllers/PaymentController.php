@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PayWithPayPalRequest;
 use App\Models\Payment;
 use Illuminate\Http\Request;
 use App\Models\Event;
@@ -11,7 +12,7 @@ use Illuminate\Support\Facades\Session;
 
 class PaymentController extends Controller
 {
-    public function payWithPayPal(Request $request)
+    public function payWithPayPal(PayWithPayPalRequest $request)
     {
         $user = auth()->user();
 
@@ -39,7 +40,7 @@ class PaymentController extends Controller
             return redirect()->route('dashboard')->with('error', 'Ya estás inscrito en este evento.');
         }
 
-        // 🔹 Si la inscripción es gratuita, validar el email y registrar directamente
+        // inscripcion gratis ? validar el email y registrar directamente
         if ($request->tipo_inscripcion === 'gratuita') {
             if (str_ends_with($user->email, '@ayala.es')) {
                 Inscription::create([
@@ -56,7 +57,7 @@ class PaymentController extends Controller
             }
         }
 
-        // 🔹 Si el monto es mayor que 0, se procesa el pago con PayPal
+        // si el monto es mayor que 0, se procesa el pago con PayPal
         if ($monto > 0) {
             $provider = new PayPalClient;
             $provider->setApiCredentials(config('paypal'));

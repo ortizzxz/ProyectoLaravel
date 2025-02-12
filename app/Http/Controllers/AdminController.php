@@ -1,6 +1,8 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreEventoRequest;
+use App\Http\Requests\StorePonenteRequest;
 use App\Models\Event;
 use App\Models\User;
 use App\Models\Payment;
@@ -49,31 +51,22 @@ class AdminController extends Controller
     }
 
     // Guardar un ponente
-    public function storePonente(Request $request)
+    public function storePonente(StorePonenteRequest $request)
     {
-        // Validar datos
-        $validatedData = $request->validate([ //requestForm
-            'nombre' => 'required|string|max:255',
-            'descripcion' => 'nullable|string|max:1000',
-            'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048', // Solo imágenes, máximo 2MB
-            'areas_experiencia' => 'nullable|array', // Asegurar que es un array
-            'areas_experiencia.*' => 'string|max:255', // Cada área debe ser un string
-            'redes_sociales' => 'nullable|string|max:500|url', // Asegurar que es una URL válida
-        ]);
+        $validatedData = $request->validated();
 
-        // Manejar la imagen si se sube
+        // Manejar la imagen 
         if ($request->hasFile('foto')) {
             $validatedData['foto'] = $request->file('foto')->store('ponentes', 'public');
         }
 
-        // Guardar en la base de datos
+        // Guardar ponente
         Speaker::create($validatedData);
 
         return redirect()->route('admin.ponentes')->with('success', 'Ponente registrado correctamente.');
     }
 
     // Borrar un ponente
-
     public function destroyPonente($id)
     {
         // Buscar el ponente en la base de datos
@@ -104,31 +97,8 @@ class AdminController extends Controller
         return view('admin.eventos.create', compact('ponentes'));
     }
 
-    public function storeEvento(Request $request)
+    public function storeEvento(StoreEventoRequest $request)
     {
-        // Reglas de validación
-        $rules = [
-            'titulo' => 'required|string|max:255',
-            'tipo' => 'required|in:conferencia,taller',
-            'fecha' => 'required|date|after_or_equal:today',
-            'hora_inicio' => 'required|date_format:H:i',
-            'ponente_id' => 'required|exists:ponentes,id',
-        ];
-
-        // Mensajes personalizados
-        $messages = [
-            'titulo.required' => 'El título es obligatorio.',
-            'titulo.string' => 'El título debe ser una cadena de texto.',
-            'tipo.in' => 'El tipo debe ser conferencia o taller.',
-            'fecha.required' => 'La fecha es obligatoria.',
-            'fecha.after_or_equal' => 'No se pueden crear eventos en fechas pasadas.',
-            'hora_inicio.date_format' => 'Formato de hora inválido.',
-            'ponente_id.exists' => 'El ponente seleccionado no es válido.',
-        ];
-
-        // Validar los datos
-        $validatedData = $request->validate($rules, $messages);
-
         // Sanitización
         $titulo = e(Str::of($request->titulo)->trim());
         $tipo = $request->tipo;
@@ -206,17 +176,16 @@ class AdminController extends Controller
     }
 
     // Mostrar tesorería 
-
-    // ATENCION CORREGIR // 
     public function showIngresos()
     {
-        // Obtener los ingresos con el nombre del usuario
+        // Obtener los ingresos con el nombre del usuario, paginados
         $ingresos = DB::table('pagos')
             ->join('users', 'pagos.user_id', '=', 'users.id')
             ->select('pagos.id', 'pagos.estado', 'pagos.monto', 'pagos.created_at', 'users.name as user_name')
-            ->get();
-
+            ->paginate(8); // Paginar 15 resultados por página
+    
         return view('admin.ingresos', compact('ingresos'));
     }
+    
 
 }
