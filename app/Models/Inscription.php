@@ -8,7 +8,7 @@ class Inscription extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'evento_id'];
+    protected $fillable = ['user_id', 'evento_id', 'tipo_inscripcion'];
     protected $table = 'inscripciones';
 
     public function user()

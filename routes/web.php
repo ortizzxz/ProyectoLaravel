@@ -22,7 +22,7 @@ Route::middleware('guest')->group(function () {
 });
 
 // Rutas protegidas que requieren autenticación (por ejemplo, perfil, eventos, etc.)
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
     // Página para ver los eventos y talleres disponibles
     Route::get('/eventos', [EventController::class, 'index'])->name('eventos');
 
@@ -46,7 +46,7 @@ Route::middleware('auth')->group(function () {
 
 
 // Rutas para el Dashboard solo para usuarios autenticados
-Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::post('/pay-with-paypal', [PaymentController::class, 'payWithPayPal'])->middleware(['auth'])->name('pay.with.paypal');
 Route::get('/payment/success', [PaymentController::class, 'paymentSuccess'])->middleware(['auth'])->name('payment.success');

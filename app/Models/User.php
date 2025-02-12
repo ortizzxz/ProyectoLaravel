@@ -12,9 +12,8 @@ class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, Notifiable;
 
-    protected $fillable = [
-        'name', 'email', 'password', 'tipo_inscripcion', 'es_estudiante', 'es_admin'
-    ];
+    protected $fillable = ['user_id', 'evento_id', 'tipo_inscripcion', 'monto_pagado', 'estado'];
+
 
     protected $hidden = [
         'password', 'remember_token',

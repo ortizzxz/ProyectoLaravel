@@ -40,8 +40,8 @@
                                             {{ \Carbon\Carbon::parse($evento->hora_inicio)->format('H:i')  }} -
                                             {{ \Carbon\Carbon::parse($evento->hora_fin)->format('H:i')  }}</p>
                                         <p><strong>Cupo Disponible:</strong>
-                                            {{ $evento->cupo_maximo - $evento->inscripciones->count() }}</p>
-                                    </div>
+                                            {{ $evento->cupo_maximo - $evento->inscripciones->where('tipo_inscripcion', 'presencial')->count() }}
+                                        </div>
                                     @if ($evento->cupo_maximo > $evento->inscripciones->count())
                                         <form action="{{ route('pay.with.paypal') }}" method="POST" class="mt-5">
                                             @csrf
@@ -52,14 +52,14 @@
                                                     class="block text-sm font-medium text-gray-700">Tipo de inscripción:</label>
                                                 <select name="tipo_inscripcion"
                                                     class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
-                                                    <option value="presencial">Presencial</option>
-                                                    <option value="virtual">Virtual</option>
                                                     @if (auth()->user()->es_estudiante)
                                                         <option value="gratuita">Gratuita (estudiante)</option>
+                                                    @else
+                                                        <option value="presencial">Presencial</option>
+                                                        <option value="virtual">Virtual</option>
                                                     @endif
                                                 </select>
                                             </div>
-                                            <input type="hidden" name="total" value="10.00"> <!-- Set the appropriate price -->
                                             <button type="submit"
                                                 class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                                 Pagar

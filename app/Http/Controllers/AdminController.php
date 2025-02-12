@@ -52,7 +52,7 @@ class AdminController extends Controller
     public function storePonente(Request $request)
     {
         // Validar datos
-        $validatedData = $request->validate([
+        $validatedData = $request->validate([ //requestForm
             'nombre' => 'required|string|max:255',
             'descripcion' => 'nullable|string|max:1000',
             'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048', // Solo imágenes, máximo 2MB

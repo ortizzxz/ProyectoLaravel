@@ -13,50 +13,86 @@ class PaymentController extends Controller
 {
     public function payWithPayPal(Request $request)
     {
-        // Verificamos los datos recibidos
-        // dd($request->all()); // Verificar los valores que estamos recibiendo
+        $user = auth()->user();
 
-        // Guardar los valores en la sesión antes de redirigir al pago
-        session(['evento_id' => $request->evento_id]);
-        session(['tipo_inscripcion' => $request->tipo_inscripcion]);
+        // Definir el monto según el tipo de inscripción
+        $monto = match ($request->tipo_inscripcion) {
+            'virtual' => 1.00,
+            'presencial' => 2.00,
+            'gratuita' => 0.00,
+            default => 0.00
+        };
+
+        // Guardar los valores en la sesión
+        session([
+            'evento_id' => $request->evento_id,
+            'tipo_inscripcion' => $request->tipo_inscripcion,
+            'monto_pagado' => $monto
+        ]);
 
         // Verificar si el usuario ya está inscrito en este evento
-        $existingInscription = Inscription::where('user_id', $request->user_id)
+        $existingInscription = Inscription::where('user_id', $user->id)
             ->where('evento_id', $request->evento_id)
             ->first();
+
         if ($existingInscription) {
             return redirect()->route('dashboard')->with('error', 'Ya estás inscrito en este evento.');
         }
-        $provider = new PayPalClient;
-        $provider->setApiCredentials(config('paypal'));
-        $paypalToken = $provider->getAccessToken();
 
-        $response = $provider->createOrder([
-            "intent" => "CAPTURE",
-            "purchase_units" => [
-                [
-                    "amount" => [
-                        "currency_code" => "EUR",
-                        "value" => number_format((float) $request->total, 2, '.', '')
-                    ]
-                ]
-            ],
-            "application_context" => [
-                "cancel_url" => route('payment.cancel'),
-                "return_url" => route('payment.success')
-            ]
-        ]);
+        // 🔹 Si la inscripción es gratuita, validar el email y registrar directamente
+        if ($request->tipo_inscripcion === 'gratuita') {
+            if (str_ends_with($user->email, '@ayala.es')) {
+                Inscription::create([
+                    'user_id' => $user->id,
+                    'evento_id' => $request->evento_id,
+                    'tipo_inscripcion' => 'gratuita',
+                    'monto_pagado' => 0,
+                    'estado' => 'confirmado'
+                ]);
 
-        if (isset($response['id']) && $response['status'] == "CREATED") {
-            foreach ($response['links'] as $link) {
-                if ($link['rel'] === 'approve') {
-                    return redirect()->away($link['href']);
-                }
+                return redirect()->route('dashboard')->with('success', 'Inscripción gratuita confirmada.');
+            } else {
+                return redirect()->route('dashboard')->with('error', 'Solo los usuarios con email @ayala.es pueden acceder gratuitamente.');
             }
         }
 
-        return redirect()->route('dashboard')->with('error', 'Error al iniciar el pago.');
+        // 🔹 Si el monto es mayor que 0, se procesa el pago con PayPal
+        if ($monto > 0) {
+            $provider = new PayPalClient;
+            $provider->setApiCredentials(config('paypal'));
+            $paypalToken = $provider->getAccessToken();
+
+            $response = $provider->createOrder([
+                "intent" => "CAPTURE",
+                "purchase_units" => [
+                    [
+                        "amount" => [
+                            "currency_code" => "EUR",
+                            "value" => number_format($monto, 2, '.', '')
+                        ]
+                    ]
+                ],
+                "application_context" => [
+                    "cancel_url" => route('payment.cancel'),
+                    "return_url" => route('payment.success')
+                ]
+            ]);
+
+            if (isset($response['id']) && $response['status'] == "CREATED") {
+                foreach ($response['links'] as $link) {
+                    if ($link['rel'] === 'approve') {
+                        return redirect()->away($link['href']);
+                    }
+                }
+            }
+
+            return redirect()->route('dashboard')->with('error', 'Error al iniciar el pago.');
+        }
+
+        return redirect()->route('dashboard')->with('error', 'Tipo de inscripción no válido.');
     }
+
+
 
     public function paymentSuccess(Request $request)
     {
@@ -92,11 +128,11 @@ class PaymentController extends Controller
         try {
             // Capturar el pago
             $response = $provider->capturePaymentOrder($orderId);
-    
+
             if (isset($response['status']) && $response['status'] === 'COMPLETED') {
                 // Obtener el monto pagado
                 $montoPagado = $response['purchase_units'][0]['payments']['captures'][0]['amount']['value'];
-    
+
                 // Registrar el pago en la base de datos
                 $pago = Payment::create([
                     'user_id' => $userId,
@@ -104,7 +140,7 @@ class PaymentController extends Controller
                     'estado' => 'completado',
                     'transaction_id' => $response['id'], // ID de transacción de PayPal
                 ]);
-    
+
                 // Registrar la inscripción en la base de datos
                 Inscription::create([
                     'user_id' => $userId,
@@ -113,7 +149,7 @@ class PaymentController extends Controller
                     'monto_pagado' => $montoPagado,
                     'estado' => 'confirmado'
                 ]);
-    
+
                 return redirect()->route('dashboard')->with('success', 'Pago realizado con éxito. Inscripción confirmada.');
             } else {
                 return redirect()->route('dashboard')->with('error', 'El pago no se completó correctamente.');
