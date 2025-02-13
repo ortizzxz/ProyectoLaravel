@@ -1,0 +1,67 @@
+[33mcommit 615d03881aca1a00987f56592104292c9197a240[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: Jesus O <jesusdortiz18@gmail.com>
+Date:   Wed Feb 12 10:14:26 2025 +0100
+
+    Feat(Pagination)
+
+[33mcommit fec217751ee819b7edb916e2a211c9bef8daf14d[m
+Author: Jesus O <jesusdortiz18@gmail.com>
+Date:   Wed Feb 12 09:32:26 2025 +0100
+
+    Fix(Logic on Payment method, either free online or insite)
+
+[33mcommit 52ef899ec3aa8ea7b7d93c91669016d074358bd9[m
+Author: Jesus O <jesusdortiz18@gmail.com>
+Date:   Wed Feb 5 15:04:43 2025 +0100
+
+    feat(AN Logo for the login/signup form)
+
+[33mcommit d1f7bbdc3b570d5d680e89d4fc359e8a431bd597[m
+Author: Jesus O <jesusdortiz18@gmail.com>
+Date:   Wed Feb 5 14:59:10 2025 +0100
+
+    Fix(logic for events where the user is already in)
+
+[33mcommit 5dc42990cce07d81c401565d0053456df0be7f2a[m
+Author: Jesus O <jesusdortiz18@gmail.com>
+Date:   Tue Feb 4 18:43:50 2025 +0100
+
+    04-02 update
+    
+    payments succesfully added using paypal sandbox. Logic tbi: email confirmation, free spots logic
+
+[33mcommit b2d80b8d501b948f382a93864dd164c85c329de7[m
+Author: Jesus O <jesusdortiz18@gmail.com>
+Date:   Tue Feb 4 13:43:55 2025 +0100
+
+    feat(image background)
+
+[33mcommit eeab367d7e1887f37106379d8b85ecc56fadad8c[m
+Author: Jesus O <jesusdortiz18@gmail.com>
+Date:   Mon Feb 3 11:44:05 2025 +0100
+
+    Feat(user section for admins)
+
+[33mcommit 239d74c99e7e404b9b919cbf6935d39fea851981[m
+Author: Jesus O <jesusdortiz18@gmail.com>
+Date:   Mon Feb 3 10:39:33 2025 +0100
+
+    Fix(logic to handle overslapping of times and conferences)
+
+[33mcommit 3b043faee3a0a1d297aca2282c6dc23389bc728c[m
+Author: Jesus O <jesusdortiz18@gmail.com>
+Date:   Sat Feb 1 16:52:17 2025 +0100
+
+    Ponentes & Eventos development
+
+[33mcommit 0bc8a63d9cd90a66251e83743fffa7a7bf0a5a16[m
+Author: Jesus O <jesusdortiz18@gmail.com>
+Date:   Sat Feb 1 11:10:01 2025 +0100
+
+    Update Readme
+
+[33mcommit 7e16dcea2a7df41230478bcdb6e91fa20723f031[m
+Author: Jesus O <jesusdortiz18@gmail.com>
+Date:   Sat Feb 1 11:00:23 2025 +0100
+
+    Uploading repository

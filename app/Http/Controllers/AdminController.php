@@ -37,10 +37,10 @@ class AdminController extends Controller
 
     public function listEventos()
     {
-        // Obtener todos los eventos, puedes agregar filtros o relaciones según lo necesites
-        $eventos = Event::all();
+        $eventos = Event::paginate(6);
         return view('admin.eventos.index', compact('eventos'));
     }
+
 
 
     // Listado de ponentes
@@ -183,9 +183,9 @@ class AdminController extends Controller
             ->join('users', 'pagos.user_id', '=', 'users.id')
             ->select('pagos.id', 'pagos.estado', 'pagos.monto', 'pagos.created_at', 'users.name as user_name')
             ->paginate(8); // Paginar 15 resultados por página
-    
+
         return view('admin.ingresos', compact('ingresos'));
     }
-    
+
 
 }

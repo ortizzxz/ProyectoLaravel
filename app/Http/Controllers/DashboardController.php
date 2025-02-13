@@ -9,7 +9,7 @@ class DashboardController extends Controller
     public function index()
     {
         // Fetch all events (conferencias & talleres)
-        $eventos = Event::orderBy('fecha', 'asc')->get();
+        $eventos = Event::orderBy('fecha', 'asc')->paginate(6); 
         return view('dashboard', compact('eventos'));
     }
 }

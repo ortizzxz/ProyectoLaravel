@@ -14,7 +14,7 @@ class PayWithPayPalRequest extends FormRequest
     public function rules()
     {
         return [
-            'evento_id' => 'required|exists:events,id', // asegurarse que el evento existe
+            'evento_id' => 'required|exists:eventos,id', // asegurarse que el evento existe
             'tipo_inscripcion' => 'required|in:virtual,presencial,gratuita', // debe ser uno de esos
         ];
     }
