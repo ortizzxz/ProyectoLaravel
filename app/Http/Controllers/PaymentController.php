@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PayWithPayPalRequest;
+use App\Mail\PaymentBill;
 use App\Models\Payment;
 use Illuminate\Http\Request;
 use App\Models\Event;
 use App\Models\Inscription;
+use Mail;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
 use Illuminate\Support\Facades\Session;
 
@@ -151,7 +153,12 @@ class PaymentController extends Controller
                     'estado' => 'confirmado'
                 ]);
 
-                return redirect()->route('dashboard')->with('success', 'Pago realizado con éxito. Inscripción confirmada.');
+                // Get the user and event
+                $user = auth()->user();
+                $event = Event::find($eventoId);
+
+                Mail::to($user->email)->send(new PaymentBill($pago, $user, $event));
+                return redirect()->route('dashboard')->with('success', 'Pago realizado con éxito. Inscripción confirmada. Se ha enviado una factura a su correo electrónico.');
             } else {
                 return redirect()->route('dashboard')->with('error', 'El pago no se completó correctamente.');
             }
