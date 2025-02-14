@@ -52,6 +52,9 @@ Route::post('/pay-with-paypal', [PaymentController::class, 'payWithPayPal'])->mi
 Route::get('/payment/success', [PaymentController::class, 'paymentSuccess'])->middleware(['auth'])->name('payment.success');
 Route::get('/payment/cancel', [PaymentController::class, 'paymentCancel'])->middleware(['auth'])->name('payment.cancel');
 
+//Ruta para el usuario para mostrar ponentes
+Route::get('/ponentes', [EventController::class, 'ponentes'])->name('ponentes');
+
 
 // Rutas para ADMIN solo para administradores
 Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {

@@ -17,6 +17,9 @@
                         <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                             {{ __('Dashboard') }}
                         </x-nav-link>
+                        <x-nav-link :href="route('ponentes')" :active="request()->routeIs('ponentes')">
+                            {{ __('Ponentes') }}
+                        </x-nav-link>
                     @endif
 
                     <!-- Admin Dashboard and Sections (only for admins) -->

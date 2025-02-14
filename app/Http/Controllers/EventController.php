@@ -22,6 +22,13 @@ class EventController extends Controller
         $ponentes = Speaker::all();
         return view('eventos.create', compact('ponentes'));
     }
+   
+    public function ponentes()
+    {
+        // Obtener todos los ponentes disponibles
+        $ponentes = Speaker::paginate(3);
+        return view('ponentes', compact('ponentes'));
+    }
 
     public function store(Request $request)
     {
