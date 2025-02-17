@@ -81,6 +81,9 @@
                             <td class="p-4 border-b text-sm text-gray-800">{{ $ponente->nombre }}</td>
                             <td class="p-4 border-b text-sm text-gray-800">{{ $ponente->descripcion }}</td>
                             <td class="p-4 border-b text-sm">
+                                <a href="{{ route('admin.ponentes.edit', $ponente->id) }}" class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700 focus:outline-none mr-2">
+                                    Editar
+                                </a>
                                 <form action="{{ url('/admin/ponentes/'.$ponente->id) }}" method="POST" class="inline">
                                     @csrf
                                     @method('DELETE')
@@ -89,6 +92,7 @@
                                     </button>
                                 </form>
                             </td>
+                            
                         </tr>
                     @endforeach
                 </tbody>

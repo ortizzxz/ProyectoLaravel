@@ -97,6 +97,60 @@ class AdminController extends Controller
         return view('admin.eventos.create', compact('ponentes'));
     }
 
+    public function editEvento($id)
+    {
+        $evento = Event::findOrFail($id);
+        $ponentes = Speaker::all();
+        return view('admin.eventos.edit', compact('evento', 'ponentes'));
+    }
+
+    public function updateEvento(Request $request, $id)
+    {
+        $evento = Event::findOrFail($id);
+
+        $validatedData = $request->validate([
+            'titulo' => 'required|max:255',
+            'tipo' => 'required|in:conferencia,taller',
+            'fecha' => 'required|date',
+            'hora_inicio' => 'required',
+            'ponente_id' => 'required|exists:ponentes,id',
+        ]);
+
+        $evento->update($validatedData);
+
+        return redirect()->route('admin.eventos')->with('success', 'Evento actualizado correctamente');
+    }
+
+    public function editPonente($id)
+    {
+        $ponente = Speaker::findOrFail($id);
+        return view('admin.ponentes.edit', compact('ponente'));
+    }
+
+    public function updatePonente(Request $request, $id)
+    {
+        $ponente = Speaker::findOrFail($id);
+
+        $validatedData = $request->validate([
+            'nombre' => 'required|max:255',
+            'descripcion' => 'nullable',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'areas_experiencia' => 'nullable|array',
+            'redes_sociales' => 'nullable',
+        ]);
+
+        if ($request->hasFile('foto')) {
+            // Manejar la subida de la nueva foto
+            $path = $request->file('foto')->store('ponentes', 'public');
+            $validatedData['foto'] = $path;
+        }
+
+        $ponente->update($validatedData);
+
+        return redirect()->route('admin.ponentes')->with('success', 'Ponente actualizado correctamente');
+    }
+
+
     public function storeEvento(StoreEventoRequest $request)
     {
         // Sanitización

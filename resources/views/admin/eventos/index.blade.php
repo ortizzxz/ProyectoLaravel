@@ -19,7 +19,7 @@
         <table class="w-full border-collapse border border-gray-300 shadow-lg rounded-lg">
             <thead>
                 <tr class="bg-gray-200">
-                    <th class="border p-2">Ponente</th>
+                    <th class="border p-2">Titulo</th>
                     <th class="border p-2">Tipo</th>
                     <th class="border p-2">Fecha</th>
                     <th class="border p-2">Hora del Evento</th>
@@ -44,15 +44,19 @@
                                 Sin ponente asignado
                             @endif
                         </td>
-                        <td class="border p-2">
-                            <form action="{{ route('admin.eventos.destroy', $evento->id) }}" method="POST">
+                        <td class="border p-2 flex items-center space-x-2">
+                            <a href="{{ route('admin.eventos.edit', $evento->id) }}" class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 focus:outline-none ">
+                                Editar
+                            </a>
+                            <form action="{{ route('admin.eventos.destroy', $evento->id) }}" method="POST" class="inline">
                                 @csrf
                                 @method('DELETE')
-                                <button class="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600 focus:outline-none">
+                                <button class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 focus:outline-none ">
                                     Eliminar
                                 </button>
                             </form>
                         </td>
+                        
                     </tr>
                 @endforeach
             </tbody>

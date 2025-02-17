@@ -65,7 +65,9 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/ponentes', [AdminController::class, 'listPonentes'])->name('admin.ponentes');
     Route::post('/ponentes', [AdminController::class, 'storePonente']);
     Route::delete('/ponentes/{id}', [AdminController::class, 'destroyPonente']);
-
+    Route::get('/ponentes/{id}/edit', [AdminController::class, 'editPonente'])->name('admin.ponentes.edit');
+    Route::put('/ponentes/{id}', [AdminController::class, 'updatePonente'])->name('admin.ponentes.update');
+    
     // Gestión de usuarios
     Route::get('/usuarios', [AdminController::class, 'listUsuarios'])->name('admin.usuarios');
     Route::post('/usuarios', [AdminController::class, 'storeUsuario']);
@@ -76,6 +78,8 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/eventos/create', [AdminController::class, 'createEvento'])->name('admin.eventos.create');  // Ruta para mostrar formulario
     Route::post('/eventos', [AdminController::class, 'storeEvento'])->name('admin.eventos.store');  // Ruta para almacenar el evento
     Route::delete('/eventos/{id}', [AdminController::class, 'destroyEvento'])->name('admin.eventos.destroy');
+    Route::get('/eventos/{id}/edit', [AdminController::class, 'editEvento'])->name('admin.eventos.edit'); // Ruta para editar erl evento
+    Route::put('/eventos/{id}', [AdminController::class, 'updateEvento'])->name('admin.eventos.update');
 
     // Ver ingresos recibidos
     Route::get('/ingresos', [AdminController::class, 'showIngresos'])->name('admin.ingresos');
