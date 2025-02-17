@@ -7,7 +7,7 @@
 <ul>
     <li>Evento: {{ $event->name }}</li>
     <li>Costo del Ticket: €{{ $payment->monto }}</li>
-    <li>ID de Transaccion: {{ $payment->transaction_id }}</li>
+    <li>ID de Transaccion: {{ $payment->transaction_id }}</li>  
     <li>Fecha: {{ $payment->created_at->format('Y-m-d H:i:s') }}</li>
 </ul>
 

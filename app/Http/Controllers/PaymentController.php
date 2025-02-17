@@ -17,7 +17,35 @@ class PaymentController extends Controller
     public function payWithPayPal(PayWithPayPalRequest $request)
     {
         $user = auth()->user();
+        $evento = Event::findOrFail($request->evento_id);
 
+        // Verificar límites de inscripción
+        $conferencias_inscritas = Inscription::where('user_id', $user->id)
+            ->whereHas('evento', function ($query) {
+                $query->where('tipo', 'conferencia');
+            })->count();
+    
+        $talleres_inscritos = Inscription::where('user_id', $user->id)
+            ->whereHas('evento', function ($query) {
+                $query->where('tipo', 'taller');
+            })->count();
+    
+        if ($evento->tipo === 'conferencia' && $conferencias_inscritas >= 5) {
+            return redirect()->route('dashboard')->with('error', 'Ya has alcanzado el límite de 5 conferencias.');
+        }
+    
+        if ($evento->tipo === 'taller' && $talleres_inscritos >= 4) {
+            return redirect()->route('dashboard')->with('error', 'Ya has alcanzado el límite de 4 talleres.');
+        }
+    
+        // Definir el monto según el tipo de inscripción
+        $monto = match ($request->tipo_inscripcion) {
+            'virtual' => 1.00,
+            'presencial' => 2.00,
+            'gratuita' => 0.00,
+            default => 0.00
+        };
+    
         // Definir el monto según el tipo de inscripción
         $monto = match ($request->tipo_inscripcion) {
             'virtual' => 1.00,
@@ -153,7 +181,7 @@ class PaymentController extends Controller
                     'estado' => 'confirmado'
                 ]);
 
-                // Get the user and event
+                // obtener usuario y evento
                 $user = auth()->user();
                 $event = Event::find($eventoId);
 

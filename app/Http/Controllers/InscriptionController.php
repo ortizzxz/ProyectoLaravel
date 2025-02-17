@@ -20,7 +20,7 @@ class InscriptionController extends Controller
 
         $evento = Event::findOrFail($evento_id);
 
-        // 🚨 Validar que el usuario no supere los límites
+        // Validar que el usuario no supere los límites
         $conferencias_inscritas = Inscription::where('user_id', $user->id)->whereHas('evento', function ($query) {
             $query->where('tipo', 'conferencia');
         })->count();
@@ -37,18 +37,18 @@ class InscriptionController extends Controller
             return back()->with('error', 'Ya has alcanzado el límite de 4 talleres.');
         }
 
-        // 🚨 Validar si hay cupo disponible
+        // Validar si hay cupo disponible
         $inscritos_actuales = Inscription::where('evento_id', $evento_id)->count();
         if ($inscritos_actuales >= $evento->cupo_maximo) {
             return back()->with('error', 'No hay más cupos disponibles para este evento.');
         }
 
-        // 🚨 Si la inscripción es gratuita, validar que es estudiante
+        // Si la inscripción es gratuita, validar que es estudiante
         if ($tipo_inscripcion === 'gratuita' && !$user->es_estudiante) {
             return back()->with('error', 'Debes ser estudiante del centro para acceder gratuitamente.');
         }
 
-        // ✅ Registrar la inscripción
+        // Registrar la inscripción
         try {
             Inscription::create([
                 'user_id' => $user->id,

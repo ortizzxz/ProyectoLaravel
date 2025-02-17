@@ -19,11 +19,10 @@
         <table class="w-full border-collapse border border-gray-300 shadow-lg rounded-lg">
             <thead>
                 <tr class="bg-gray-200">
-                    <th class="border p-2">Título</th>
+                    <th class="border p-2">Ponente</th>
                     <th class="border p-2">Tipo</th>
                     <th class="border p-2">Fecha</th>
-                    <th class="border p-2">Hora de Inicio</th>
-                    <th class="border p-2">Hora de Fin</th>
+                    <th class="border p-2">Hora del Evento</th>
                     <th class="border p-2">Ponente</th>
                     <th class="border p-2">Acciones</th>
                 </tr>
@@ -34,8 +33,10 @@
                         <td class="border p-2">{{ $evento->titulo }}</td>
                         <td class="border p-2 capitalize">{{ $evento->tipo }}</td>
                         <td class="border p-2">{{ \Carbon\Carbon::parse($evento->fecha)->format('d/m/Y') }}</td>
-                        <td class="border p-2">{{ $evento->hora_inicio }}</td>
-                        <td class="border p-2">{{ $evento->hora_fin }}</td>
+                        <td class="border p-2">
+                            {{ \Carbon\Carbon::parse($evento->hora_inicio)->format('H:i') }} - 
+                            {{ \Carbon\Carbon::parse($evento->hora_fin)->format('H:i') }}
+                        </td>
                         <td class="border p-2">
                             @if($evento->ponente)
                                 {{ $evento->ponente->nombre }}
@@ -61,6 +62,10 @@
             <a href="{{ route('admin.eventos.create') }}" class="px-6 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none">
                 Crear Evento
             </a>
+        </div>
+        <!-- Paginación -->
+        <div class="mt-6">
+            {{ $eventos->links() }}
         </div>
     </div>
 @endsection
